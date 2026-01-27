@@ -9,24 +9,30 @@ class Router
     public function run()
     {
         $method = $_SERVER['REQUEST_METHOD'];
-        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        if ($method === 'GET' && $url === '/students') {
-            require_once '../app/controllers/StudentController.php';
-            $controller = new StudentController();
-            $controller->index();
+        echo "{$method} {$uri}";
+
+        if ($method == 'GET' && $uri == '/students') {
+            // require_once '../app/controllers/StudentController.php';
+            // $controller = new StudentController();
+            // $controller->index();
+            echo "<h1>Daftar Siswa</h1>";
+            echo "<h1>Adalah Pokoknya</h1>";
             return;
         }
         
-        if ($method === 'GET' && $url === '/students/create') {
-            require_once '../app/controllers/StudentController.php';
-            $controller = new StudentController();
-            $controller->create();
+        if ($method == 'GET' && $uri == '/students/create') {
+            // require_once '../app/controllers/StudentController.php';
+            // $controller = new StudentController();
+            // $controller->create();
+            echo "<h1>Tambah Siswa</h1>";
+            echo "<h1>Adalah Pokoknya</h1>";
             return;
         }
 
         http_response_code(404);
-        echo "Not Found Page";
+        echo "<h1>404 - Page Not Found</h1>";
     }
 
 
