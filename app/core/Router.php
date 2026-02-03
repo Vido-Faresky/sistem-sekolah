@@ -17,17 +17,6 @@ class Router
             ];
         }
 
-        private function buildPattern(string $uri)
-        {
-            $pattern = str_replace(
-                '{$id}',
-                '([0-9]+)',
-                $uri,
-            );
-
-             return '#^' . $pattern . '$#';
-        }
-
        
         
     public function run()
@@ -36,14 +25,20 @@ class Router
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
         foreach ($this->routes as $route) {
-            $pattern = $this->buildPattern($route['path']);
+            $pattern = str_replace(
+                '{id}',
+                '([0-9]+)',
+                $route['uri'],
+            );
+
+            $pattern = '#^' . $pattern . '$#';
 
             if (preg_match($pattern, $uri, $matches)) {
                 array_shift($matches);
                 require_once './app/controllers/' . $route['controller'] . '.php';
                 $function = $route['function'];
 
-                $controllerClass = 'App\\Controllers\\' . $route['controller'];
+                $controllerClass = 'App\\Controller\\' . $route['controller'];
                 $controller = new $controllerClass();
 
                 call_user_func_array([$controller, $function], $matches);
@@ -52,19 +47,7 @@ class Router
             }
         }
 
-        if ($method == 'GET' && $uri == '/students') {
-            require_once './app/controllers/StudentController.php';
-            $controller = new StudentController();
-            $controller->index();
-            return;
-        }
-        
-        if ($method == 'GET' && $uri == '/students/create') {
-            require_once './app/controllers/StudentController.php';
-            $controller = new StudentController();
-            $controller->create();
-            return;
-        }
+
 
         http_response_code(404);
         echo "<h1>404 - Page Not Found</h1>";
