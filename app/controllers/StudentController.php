@@ -7,7 +7,7 @@ class StudentController
     public function index()
     {
         echo '<h1>Halaman Daftar Siswa</h1>';
-        echo '<p>Menampilkan Daftar Seluruh Siswa</p>';
+        echo '<p>Menampilkan Daftar Seluruh Siswaa</p>';
     }
 
     public function create()
